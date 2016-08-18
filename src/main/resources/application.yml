@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: appetizer-service
+
+server:
+  port: 8082
+
+eureka:
+  instance:
+     preferIpAddress: true
+  client:
+    serviceUrl:
+       defaultZone: http://localhost:8080/
+
+wfd:
+  appetizer:
+    order: 1
+    type: appetizer
+    menu:
+      - Hummus
+      - Crab Cakes
+      - Mozzerella Sticks
