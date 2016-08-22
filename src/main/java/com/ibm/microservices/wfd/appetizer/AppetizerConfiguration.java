@@ -1,4 +1,4 @@
-package com.ibm.microservices.wfd;
+package com.ibm.microservices.wfd.appetizer;
 
 /**
  *  Patterned after https://github.com/aykutakin/SpringConfigurationPropertiesSample

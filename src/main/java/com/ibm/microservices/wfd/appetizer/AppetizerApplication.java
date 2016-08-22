@@ -1,4 +1,4 @@
-package com.ibm.microservices.wfd;
+package com.ibm.microservices.wfd.appetizer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

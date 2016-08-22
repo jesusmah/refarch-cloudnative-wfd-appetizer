@@ -1,4 +1,4 @@
-package com.ibm.microservices.wfd;
+package com.ibm.microservices.wfd.appetizer;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ibm.microservices.wfd.appetizer.model.Appetizer;
+
 @RestController
 @EnableConfigurationProperties
 @ResponseBody
@@ -20,18 +22,13 @@ public class AppetizerController {
     private AppetizerConfiguration config;
 
     @RequestMapping("/menu")
-    public List<String> getMealMenu() {
-        return this.config.getMenu();
+    public Appetizer getMealMenu() {
+      Appetizer local = new Appetizer();
+      local.setMenu(this.config.getMenu());
+      local.setType(this.config.getType());
+      local.setOrder(this.config.getOrder());
+      return local;
     }
 
-    @RequestMapping("/type")
-    public String getMealType(){
-      return this.config.getType();
-    }
-
-    @RequestMapping("/order")
-    public int getMealOrder(){
-      return this.config.getOrder();
-    }
 
 }
