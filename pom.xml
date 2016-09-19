@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.ibm.case.microservices.wfd</groupId>
-	<artifactId>appetizer</artifactId>
+	<artifactId>wfd-appetizer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
