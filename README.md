@@ -51,7 +51,7 @@ In this section you will deploy the Spring Boot application to run on your local
 
 3. Validate.
     ```
-    # curl http://localhost:8082/appetizers
+    curl http://localhost:8082/appetizers
     {"order":1,"menu":["Hummus","Crab Cakes","Mozzerella Sticks"],"type":"appetizer"}
     ```
 
@@ -116,7 +116,7 @@ In this section you will deploy the Spring Boot application to run in a local do
 
 6. Validate.  
     ```
-    # curl http://wfd-appetizer-{your-bluemix-user-id}.mybluemix.net/appetizers
+    curl http://wfd-appetizer-{your-bluemix-user-id}.mybluemix.net/appetizers
     {"order":1,"menu":["Hummus","Crab Cakes","Mozzerella Sticks"],"type":"appetizer"}
     ```
 
@@ -155,6 +155,6 @@ In this section you will deploy the Spring Boot application to run in a local do
 
 7. Validate.  
     ```
-    # curl http://wfd-appetizer-$(cf ic namespace get).mybluemix.net/appetizers
+    curl http://wfd-appetizer-$(cf ic namespace get).mybluemix.net/appetizers
     {"order":1,"menu":["Hummus","Crab Cakes","Mozzerella Sticks"],"type":"appetizer"}
     ```
