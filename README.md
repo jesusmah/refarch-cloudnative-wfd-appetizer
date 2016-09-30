@@ -14,8 +14,8 @@ This project is built to demonstrate how to build a Spring Boot application for 
 
 #### APIs in this application
 You can use cURL or Chrome POSTMAN to send get/post/put/delete requests to the application.
-- Get available options for Appetizers
-http://<hostname>/appetizers
+- Get available options for Appetizers  
+`http://<hostname>/appetizers`
 
 #### Pre-requisite:
 - You need a Docker machine running on localhost to host container(s). [Click for instructions](https://docs.docker.com/machine/get-started/).
@@ -56,7 +56,7 @@ In this section you will deploy the Spring Boot application to run on your local
     ```
 
 #### Run Appetizer Service application on local Docker container
-In this section you will deploy the Spring Boot application to run in a local docker container. The database server will also be setup to run as a container on the local machine.
+In this section you will deploy the Spring Boot application to run in a local docker container.
 
 1. Build service and container image:
     ```
@@ -90,17 +90,18 @@ In this section you will deploy the Spring Boot application to run in a local do
 
 3. [Setup Eureka on Bluemix](https://github.com/ibm-cloud-architecture/microservices-netflix-eureka#run-the-application-component-on-bluemix).
 
-4.  Create a user-provided service for Eureka so the services running in Cloud Foundry can bind to it:
+4.  Create a user-provided service for Eureka, so the services running in Cloud Foundry can bind to it:
 
     ```
     cf create-user-provided-service eureka-service-discovery -p "{\"uri\": \"http://{eureka-host}/eureka/\"}"
     ```
 
-4. Start the application in a Cloud Foundry runtime on IBM Bluemix.
+5. Start the application in a Cloud Foundry runtime on IBM Bluemix.
 
   The following commands push the service code to Bluemix and creates a Cloud Foundry application.  It then sets the desired Spring Boot profile for the application to configure itself correctly, as well as binds the user-provided service with the Eureka endpoint information.  Finally, it restages the application code to ensure it receives all the configuration changes and then starts the application.  
 
-_NOTE_: There is no need for a port in the Eureka parameter, as the Container Group running Eureka is listening on port 80 (the default HTTP port) and will forward to the necessary port of 8761 that Eureka is listening on.
+  _NOTE_: There is no need for a port in the Eureka parameter, as the Container Group running Eureka is listening on port 80 (the default HTTP port) and will forward to the necessary port of 8761 that Eureka is listening on.  
+
     ```
     cf push -p build/libs/wfd-appetizer-0.0.1-SNAPSHOT.jar -d mybluemix.net -n wfd-appetizer-{your-bluemix-user-id} --no-start
 
@@ -113,7 +114,7 @@ _NOTE_: There is no need for a port in the Eureka parameter, as the Container Gr
     cf start microservices-refapp-wfd-appetizer
     ```
 
-5. Validate.
+6. Validate.  
     ```
     # curl http://wfd-appetizer-{your-bluemix-user-id}.mybluemix.net/appetizers
     {"order":1,"menu":["Hummus","Crab Cakes","Mozzerella Sticks"],"type":"appetizer"}
@@ -147,12 +148,12 @@ _NOTE_: There is no need for a port in the Eureka parameter, as the Container Gr
 
 6. Start the application in an IBM Bluemix Container. Replace `{eureka-host}` with the public route configured in the deployment of Eureka to Bluemix.  
 
-_NOTE_: There is no need for a port in the Eureka parameter, as the Container Group running Eureka is listening on port 80 (the default HTTP port) and will forward to the necessary port of 8761 that Eureka is listening on.
+  _NOTE_: There is no need for a port in the Eureka parameter, as the Container Group running Eureka is listening on port 80 (the default HTTP port) and will forward to the necessary port of 8761 that Eureka is listening on.  
     ```
     cf ic group create -p 8082 -m 256 --min 1 --auto --name wfd-appetizer-group -e "--env "eureka.client.serviceUrl.defaultZone=http://eureka-host/eureka/" -e "spring.datasource.username={dbuser}" -n wfd-appetizer-$(cf ic namespace get) -d mybluemix.net registry.ng.bluemix.net/$(cf ic namespace get)/wfd-appetizer:latest
     ```
 
-7. Validate.
+7. Validate.  
     ```
     # curl http://wfd-appetizer-$(cf ic namespace get).mybluemix.net/appetizers
     {"order":1,"menu":["Hummus","Crab Cakes","Mozzerella Sticks"],"type":"appetizer"}
