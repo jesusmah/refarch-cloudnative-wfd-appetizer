@@ -150,7 +150,7 @@ In this section you will deploy the Spring Boot application to run in a local do
 
   _NOTE_: There is no need for a port in the Eureka parameter, as the Container Group running Eureka is listening on port 80 (the default HTTP port) and will forward to the necessary port of 8761 that Eureka is listening on.  
     ```
-    cf ic group create -p 8082 -m 256 --min 1 --auto --name wfd-appetizer-group -e "--env "eureka.client.serviceUrl.defaultZone=http://eureka-host/eureka/" -e "spring.datasource.username={dbuser}" -n wfd-appetizer-$(cf ic namespace get) -d mybluemix.net registry.ng.bluemix.net/$(cf ic namespace get)/wfd-appetizer:latest
+    cf ic group create -p 8082 -m 256 --min 1 --auto --name wfd-appetizer-group -e "--env "eureka.client.serviceUrl.defaultZone=http://eureka-host/eureka/" -n wfd-appetizer-$(cf ic namespace get) -d mybluemix.net registry.ng.bluemix.net/$(cf ic namespace get)/wfd-appetizer:latest
     ```
 
 7. Validate.  
