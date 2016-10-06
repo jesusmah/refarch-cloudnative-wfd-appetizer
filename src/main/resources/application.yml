@@ -1,9 +1,6 @@
 spring:
   application:
     name: appetizer-service
-#  cloud:
-#    client:
-#      hostname: localhost
 
 server:
   port: 8082
@@ -30,7 +27,11 @@ wfd:
 ---
 spring:
   profiles: cloud
-eureka:
-  instance:
-    nonSecurePort: 80
-    preferIpAddress: false
+
+server:
+  port: 8082
+
+#eureka:
+#  instance:
+#    nonSecurePort: 80
+#    preferIpAddress: false
