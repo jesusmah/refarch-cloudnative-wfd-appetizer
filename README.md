@@ -1,4 +1,4 @@
-###### microservices-refapp-wfd-appetizer
+###### refarch-cloudnative-wfd-appetizer
 
 ### Microservices Reference Application - What's For Dinner Appetizer Service
 
@@ -24,7 +24,7 @@ You can use cURL or Chrome POSTMAN to send get/post/put/delete requests to the a
 1. Clone git repository.
     ```
     git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer
-    cd microservices-refapp-wfd-appetizer
+    cd refarch-cloudnative-wfd-appetizer
     ```
 
 2. Build the application.  A utility script is provided to easily build using either Gradle (default) or Maven.  You can optionally specify the `-d` parameter to build the associated Docker image as well.
@@ -105,13 +105,13 @@ In this section you will deploy the Spring Boot application to run in a local do
     ```
     cf push -p build/libs/wfd-appetizer-0.0.1-SNAPSHOT.jar -d mybluemix.net -n wfd-appetizer-{your-bluemix-user-id} --no-start
 
-    cf set-env microservices-refapp-wfd-appetizer SPRING_PROFILES_ACTIVE cloud
+    cf set-env wfd-appetizer SPRING_PROFILES_ACTIVE cloud
 
-    cf bind-service microservices-refapp-wfd-appetizer eureka-service-discovery
+    cf bind-service wfd-appetizer eureka-service-discovery
 
-    cf restage microservices-refapp-wfd-appetizer
+    cf restage wfd-appetizer
 
-    cf start microservices-refapp-wfd-appetizer
+    cf start wfd-appetizer
     ```
 
 6. Validate.  
