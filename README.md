@@ -3,7 +3,7 @@
 ### Microservices Reference Application - What's For Dinner Appetizer Service
 
 *This project is part of the 'IBM Cloud Architecture - Microservices Reference Application for Netflix OSS' suite, available at
-https://github.com/ibm-cloud-architecture/microservices-netflix*
+https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix*
 
 #### Introduction
 
@@ -23,7 +23,7 @@ You can use cURL or Chrome POSTMAN to send get/post/put/delete requests to the a
 #### Build the application
 1. Clone git repository.
     ```
-    git clone https://github.com/ibm-cloud-architecture/microservices-refapp-wfd-appetizer
+    git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer
     cd microservices-refapp-wfd-appetizer
     ```
 
@@ -42,7 +42,7 @@ You can use cURL or Chrome POSTMAN to send get/post/put/delete requests to the a
 #### Run Appetizer Service on localhost
 In this section you will deploy the Spring Boot application to run on your localhost.
 
-1.  [Setup Eureka](https://github.com/ibm-cloud-architecture/microservices-netflix-eureka#run-the-application-component-locally) to run locally.
+1.  [Setup Eureka](https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-eureka#run-the-application-component-locally) to run locally.
 
 2. Run the application on localhost (assuming default Gradle build).  If Eureka is not running locally, you will need to pass the location of the Eureka server as a command-line paramter.
     ```
@@ -63,7 +63,7 @@ In this section you will deploy the Spring Boot application to run in a local do
     ./build-microservice.sh -d
     ```
 
-2. If not done so already, [Setup Eureka](https://github.com/ibm-cloud-architecture/microservices-netflix-eureka#run-the-application-component-locally) to run locally.
+2. If not done so already, [Setup Eureka](https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-eureka#run-the-application-component-locally) to run locally.
 
 3. Start the application in docker container.
     ```
@@ -88,7 +88,7 @@ In this section you will deploy the Spring Boot application to run in a local do
     cf target -o <your-bluemix-org> -s <your-bluemix-space>
     ```
 
-3. [Setup Eureka on Bluemix](https://github.com/ibm-cloud-architecture/microservices-netflix-eureka#run-the-application-component-on-bluemix).
+3. [Setup Eureka on Bluemix](https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-eureka#run-the-application-component-on-bluemix).
 
 4.  Create a user-provided service for Eureka, so the services running in Cloud Foundry can bind to it:
 
@@ -140,11 +140,11 @@ In this section you will deploy the Spring Boot application to run in a local do
 
 4. Tag and push the local docker image to bluemix private registry.
     ```
-    docker tag wfd-microservice registry.ng.bluemix.net/$(cf ic namespace get)/wfd-microservice:latest
-    docker push registry.ng.bluemix.net/$(cf ic namespace get)/wfd-microservice:latest
+    docker tag wfd-appetizer registry.ng.bluemix.net/$(cf ic namespace get)/wfd-appetizer:latest
+    docker push registry.ng.bluemix.net/$(cf ic namespace get)/wfd-appetizer:latest
     ```
 
-5. [Setup Eureka on Bluemix](https://github.com/ibm-cloud-architecture/microservices-netflix-eureka#run-the-application-component-on-bluemix).
+5. [Setup Eureka on Bluemix](https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix-eureka#run-the-application-component-on-bluemix).
 
 6. Start the application in an IBM Bluemix Container. Replace `{eureka-host}` with the public route configured in the deployment of Eureka to Bluemix.  
 
