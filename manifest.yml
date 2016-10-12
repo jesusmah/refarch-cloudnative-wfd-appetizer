@@ -1,3 +1,3 @@
 applications:
 - name: wfd-appetizer
-  memory: 256M
+  memory: 512M
