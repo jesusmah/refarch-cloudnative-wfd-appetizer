@@ -27,14 +27,14 @@ You can use cURL or Chrome POSTMAN to send get/post/put/delete requests to the a
     cd refarch-cloudnative-wfd-appetizer
     ```
 
-2. Build the application.  A utility script is provided to easily build using either Gradle (default) or Maven.  You can optionally specify the `-d` parameter to build the associated Docker image as well.
+2. Build the application.  A utility script is provided to easily build using either Gradle (default) or Maven.  You can optionally specify the `-d` parameter to build the associated Docker image as well.  The default Gradle build instructions use a Gradle wrapper requiring no further installation.  The Maven build instructions require Maven to be installed locally.
 
   2.1 Build the application using Gradle:
     ```
     ./build-microservice.sh [-d]
     ```
 
-  2.1 Build the application using Gradle:
+  2.2 Build the application using Maven:
     ```
     ./build-microservice.sh -m [-d]
     ```
