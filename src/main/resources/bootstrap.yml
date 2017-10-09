@@ -4,3 +4,12 @@ spring:
   cloud:
     config:
       uri: ${vcap.services.config-server.credentials.uri:http://localhost:8888}
+      failFast: true
+      retry:
+        initialInterval: 1500
+        multiplier: 1.5
+        maxInterval: 10000
+        maxAttempts: 10
+      discovery:
+        serviceId: config-server
+        enabled: false

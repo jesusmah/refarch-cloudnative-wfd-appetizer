@@ -6,8 +6,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest( properties = { "spring.cloud.config.enabled:false",
+																"spring.cloud.discovery.enabled:false" } )
 public class AppetizerApplicationTests {
+	
+	//Config and Discovery services are disabled for contextLoads tests
 
 	@Test
 	public void contextLoads() {

@@ -8,14 +8,23 @@ https://github.com/ibm-cloud-architecture/refarch-cloudnative-netflix*
 #### Introduction
 
 This project is built to demonstrate how to build a Spring Boot application for use in a microservices-based architecture:
- - Leverage Spring Boot framework to build a microservices application.
- - Integrate with [Netflix Eureka](https://github.com/Netflix/eureka) framework.
+ - Leverage Spring Boot & Spring Cloud frameworks to build a microservices-based application.
+ - Integrate with the [Netflix Eureka](https://github.com/Netflix/eureka) framework.
  - Deployment options for local, Cloud Foundry, or Docker Container-based runtimes (including [IBM Container Service](https://console.ng.bluemix.net/docs/containers/container_index.html) on [Bluemix](https://new-console.ng.bluemix.net/#overview)).
+
+Additionally, this microservice leverages robust resiliency capabilities, provided in this implementation by the Spring Cloud Config Server client libraries.  The microservice will retry multiple times to contact the Config Server for the most up-to-date configuration data upon startup.  Should the Config Server still be unavailable, after a configurable period of retries, the microservice will fail to start and can be diagnosed for additional connectivity problems or configured to be started with static built-in configuration data.  
+
+For more information on Spring Cloud Config Server retry capabilities, you can reference the [Spring Cloud Config Server](https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#config-client-retry) documentation.  Regardless of framework and tooling selection, resiliency capabilities, like this configurable retry logic, are critical in microservice-based applications.
 
 #### APIs in this application
 You can use cURL or Chrome POSTMAN to send get/post/put/delete requests to the application.
 - Get available options for Appetizers  
 `http://<hostname>/appetizers`
+
+#### Configuration Options in this application
+These options can be set on the command-line, in a Docker Compose environment file, or any other way that [Spring Boot supports](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html):  
+- Disable Config Server retry logic, allowing startup without remote configuration data:  
+  `spring.cloud.config.failFast=false`
 
 #### Pre-requisite:
 - You need a Docker machine running on localhost to host container(s). [Click for instructions](https://docs.docker.com/machine/get-started/).
