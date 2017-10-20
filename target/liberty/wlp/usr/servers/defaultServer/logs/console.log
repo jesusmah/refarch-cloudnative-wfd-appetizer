@@ -1,0 +1,23 @@
+Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=256m; support was removed in 8.0
+objc[99567]: Class JavaLaunchHelper is implemented in both /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/bin/java (0x10aedb4c0) and /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/libinstrument.dylib (0x10afd54e0). One of the two will be used. Which one is undefined.
+Launching defaultServer (WebSphere Application Server 2017.9.0.1/wlp-1.0.18.201709251422) on Java HotSpot(TM) 64-Bit Server VM, version 1.8.0_131-b11 (en_US)
+[AUDIT   ] CWWKE0001I: The server defaultServer has been launched.
+[AUDIT   ] CWWKE0104I: This product is a beta and cannot be used in production. The full license terms can be viewed here: https://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/license/early_access/ilar/2017.9.0.1/lafiles/en.html
+[AUDIT   ] CWWKZ0058I: Monitoring dropins for applications. 
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://192.168.0.8:9081/ibm/api/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://192.168.0.8:9081/health/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://192.168.0.8:9081/metrics/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://192.168.0.8:9081/jwt/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://192.168.0.8:9081/WfdAppetizer/
+[AUDIT   ] CWWKZ0001I: Application WfdAppetizer-1.0-SNAPSHOT started in 0.429 seconds.
+[AUDIT   ] CWWKF0012I: The server installed the following features: [microProfile-1.2, mpFaultTolerance-1.0, servlet-3.1, ssl-1.0, jndi-1.0, mpHealth-1.0, jsonp-1.0, appSecurity-2.0, mpConfig-1.1, jaxrs-2.0, jaxrsClient-2.0, concurrent-1.0, jwt-1.0, mpMetrics-1.0, mpJwt-1.0, json-1.0, cdi-1.2, distributedMap-1.0].
+[AUDIT   ] CWWKF0011I: The server defaultServer is ready to run a smarter planet.
+[AUDIT   ] CWWKE0055I: Server shutdown requested on Wednesday, October 18, 2017 at 8:24 PM. The server defaultServer is shutting down.
+[AUDIT   ] CWWKE1100I: Waiting for up to 30 seconds for the server to quiesce.
+[AUDIT   ] CWWKT0017I: Web application removed (default_host): http://192.168.0.8:9081/jwt/
+[AUDIT   ] CWWKT0017I: Web application removed (default_host): http://192.168.0.8:9081/WfdAppetizer/
+[AUDIT   ] CWWKT0017I: Web application removed (default_host): http://192.168.0.8:9081/health/
+[AUDIT   ] CWWKT0017I: Web application removed (default_host): http://192.168.0.8:9081/metrics/
+[AUDIT   ] CWWKT0017I: Web application removed (default_host): http://192.168.0.8:9081/ibm/api/
+[AUDIT   ] CWWKZ0009I: The application WfdAppetizer-1.0-SNAPSHOT has stopped successfully.
+[AUDIT   ] CWWKE0036I: The server defaultServer stopped after 4 hours, 25 minutes, 27.853 seconds.

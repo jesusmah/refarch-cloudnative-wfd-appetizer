@@ -1,0 +1,4 @@
+application/rest/AppetizerApplication.class
+application/rest/Appetizer.class
+application/rest/HealthEndpoint.class
+application/rest/AppetizerResource.class
