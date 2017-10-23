@@ -1,2 +1,2 @@
--# Microservices Reference Application - What's For Dinner
--## Appetizer Service - MicroProfile
+# Microservices Reference Application - What's For Dinner
+## Appetizer Service - MicroProfile
