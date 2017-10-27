@@ -23,7 +23,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /WfdAppetizer/rest/appetizer
-            port: 9081
+            port: 9080
           initialDelaySeconds: 20
 {{  end }}
         resources:

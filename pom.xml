@@ -13,7 +13,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <app.name>WfdAppetizer</app.name>
-        <testServerHttpPort>9081</testServerHttpPort>
+        <testServerHttpPort>9080</testServerHttpPort>
         <testServerHttpsPort>9443</testServerHttpsPort>
         <warContext>${app.name}</warContext>
         <package.file>${project.build.directory}/${app.name}.zip</package.file>

@@ -10,6 +10,6 @@ RUN wget -t 10 -x -nd -P /opt/ibm/wlp/usr https://repo1.maven.org/maven2/net/was
 # Install required features if not present
 RUN installUtility install --acceptLicense defaultServer
 
-EXPOSE 9081 9443
+EXPOSE 9080 9443
 
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]

@@ -10,7 +10,7 @@ spec:
   ports:
   # the port that this service should serve on
   - name: http
-    port: 9081
+    port: 9080
   - name: https
     port: 9443
 
@@ -36,7 +36,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /WfdAppetizer/rest/appetizer
-            port: 9081
+            port: 9080
           initialDelaySeconds: 20
         # resources:
         #   requests:

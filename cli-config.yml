@@ -38,7 +38,7 @@ build-cmd-debug : "mvn install -Dmaven.repo.local=/project/.m2/repository"
 debug-cmd : "server debug"
 
 # The port mappings between the host and the container in the form [host:container]
-container-port-map : "9081:9081,9443:9443"
+container-port-map : "9080:9080,9443:9443"
 
 # The port mappings between the host and the container for the debug port in the form [host:container]
 container-port-map-debug : "7777:7777"
