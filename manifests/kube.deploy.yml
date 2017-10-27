@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "wfdappetizer-service"
+  name: "wfd-appetizer"
 spec:
   # if your cluster supports it, uncomment the following to automatically create
   # an external load-balanced IP for the frontend service.
@@ -15,12 +15,12 @@ spec:
     port: 9443
 
   selector:
-    app: "wfdappetizer-selector"
+    app: "wfd-appetizer"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "wfdappetizer-deployment"
+  name: "wfd-appetizer"
 spec:
   # this replicas value is default
   # modify it according to your case
@@ -28,11 +28,11 @@ spec:
   template:
     metadata:
       labels:
-        app: "wfdappetizer-selector"
+        app: "wfd-appetizer"
     spec:
       containers:
-      - name: wfdappetizer
-        image: wfdappetizer:latest
+      - name: wfd-appetizer
+        image: ibmcase/wfd-appetizer:microprofile
         readinessProbe:
           httpGet:
             path: /WfdAppetizer/rest/appetizer
