@@ -57,11 +57,19 @@ Maven is a project management tool that is based on the Project Object Model (PO
 
 For Liberty, there is nice tool called [Liberty Accelerator](https://liberty-app-accelerator.wasdev.developer.ibm.com/start/) that generates a simple project based upon your configuration. Using this, you can build and deploy to Liberty either using the Maven or Gradle build. 
 
-**Pic1**
+<p align="center">
+  <a href="https://microprofile.io/">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/LibertyAcc_Home.png">
+  </a>
+</p>
 
 Just check the options of your choice and click Generate project. You can either Download it as a zip or you can create git project.
 
-**Pic2**
+<p align="center">
+  <a href="https://microprofile.io/">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/LibertyAcc_PrjGen.png">
+  </a>
+</p>
 
 Once you are done with this, you will have a sample microprofile based application that you can deploy on Liberty.
 
@@ -92,10 +100,135 @@ For our application, the following are the required dependencies which are the p
 
 Using Liberty Accelerator is your choice. You can also create the entire project manually, but using Liberty Accelerator will make things easier.
 
+To make use of MicroProfile 1.2, include the below dependency in your POM.
 
+```
+<dependency>
+    <groupId>org.eclipse.microprofile</groupId>
+    <artifactId>microprofile</artifactId>
+    <version>1.2</version>
+    <type>pom</type>
+    <scope>provided</scope>
+</dependency>
+```
 
+If you want to enable Zipkin OpenTracing feature, please include the below dependency in your POM.
 
+```
+<dependency>
+    <groupId>net.wasdev.wlp.tracer</groupId>
+    <artifactId>liberty-opentracing-zipkintracer</artifactId>
+    <version>1.0</version>
+    <type>jar</type>
+    <scope>provided</scope>
+</dependency>
+```
 
+##### Running the application locally using Maven Build
+
+1. Clone this repository.
+   `git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer.git`
+2. Checkout MicroProfile branch.
+   `git checkout microprofile`
+3. `cd refarch-cloudnative-wfd-appetizer/`
+4. Run this command. This command builds the project and installs it.
+   `mvn install`
+   
+   If this runs successfully, you will be able to see the below messages.
+   
+```
+[INFO] --- maven-failsafe-plugin:2.18.1:verify (verify-results) @ WfdAppetizer ---
+[INFO] Failsafe report directory: /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/target/test-reports/it
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ WfdAppetizer ---
+[INFO] Installing /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/target/WfdAppetizer-1.0-SNAPSHOT.war to /Users/Hemankita.Perabathini@ibm.com/.m2/repository/projects/WfdAppetizer/1.0-SNAPSHOT/WfdAppetizer-1.0-SNAPSHOT.war
+[INFO] Installing /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/pom.xml to /Users/Hemankita.Perabathini@ibm.com/.m2/repository/projects/WfdAppetizer/1.0-SNAPSHOT/WfdAppetizer-1.0-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 20.769 s
+[INFO] Finished at: 2017-10-31T16:08:12-05:00
+[INFO] Final Memory: 19M/305M
+[INFO] ------------------------------------------------------------------------
+```
+5. Now start your server.
+   `mvn liberty:start-server`
+   
+   You will see the below.
+```
+[INFO] Starting server defaultServer.
+[INFO] Server defaultServer started with process ID 64952.
+[INFO] Waiting up to 30 seconds for server confirmation:  CWWKF0011I to be found in /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/target/liberty/wlp/usr/servers/defaultServer/logs/messages.log
+[INFO] CWWKM2010I: Searching for CWWKF0011I in /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/target/liberty/wlp/usr/servers/defaultServer/logs/messages.log. This search will timeout after 30 seconds.
+[INFO] CWWKM2015I: Match number: 1 is [10/31/17 16:12:07:756 CDT] 00000019 com.ibm.ws.kernel.feature.internal.FeatureManager            A CWWKF0011I: The server defaultServer is ready to run a smarter planet..
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 16.650 s
+[INFO] Finished at: 2017-10-31T16:12:07-05:00
+[INFO] Final Memory: 9M/309M
+[INFO] ------------------------------------------------------------------------
+```
+6. Now, go to your browser and access the REST endpoint at http://localhost:9080/WfdAppetizer/rest/appetizer.
+
+**PIC**
+   
+   Access URL : http://<HOST>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>
+  
+In our sample application, you can get the details of the above URL as follows.
+
+- Since, we are running the application locally on our system, the **HOST** will be `localhost`.
+- You can get the **PORT** and **WAR_CONTEXT** from the `<properties> </properties>` section of our POM.
+
+```
+<app.name>WfdAppetizer</app.name>
+<testServerHttpPort>9080</testServerHttpPort>
+<testServerHttpsPort>9443</testServerHttpsPort>
+<warContext>${app.name}</warContext>
+```
+So, **PORT** will be `9080` and **WAR_CONTEXT** will be `WfdAppetizer`.
+
+- **APPLICATION_PATH** can be found in [AppetizerApplication.java](https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer/blob/microprofile/src/main/java/application/rest/AppetizerApplication.java)
+
+```
+@ApplicationPath("/rest")
+```
+
+In our sample, the **APPLICATION_PATH** will be `rest`.
+
+- Finally you can find the appetizer endpoint at [AppetizerResource.java](https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer/blob/microprofile/src/main/java/application/rest/AppetizerResource.java)
+
+```
+@Path("appetizer")
+```
+So, **ENDPOINT** to access the rest api that exposes the list of appetizers is `appetizer`.
+
+Also, there is one more endpoint defined at [HealthEndpoint.java](https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer/blob/microprofile/src/main/java/application/rest/HealthEndpoint.java)
+
+```
+@Path("health")
+```
+
+To access the health api, replace the **ENDPOINT** with `health`. This endpoint gives the health of your application. To check this, use http://localhost:9080/WfdAppetizer/rest/health.
+
+7. If you are done accessing the application, you can stop your server using the following command.
+   `mvn liberty:stop-server`
+
+Once you do this, you see the below messages.
+
+```
+[INFO] CWWKM2001I: Invoke command is [/Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/target/liberty/wlp/bin/server, stop, defaultServer].
+[INFO] objc[65225]: Class JavaLaunchHelper is implemented in both /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/bin/java (0x1048254c0) and /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre/lib/libinstrument.dylib (0x10491f4e0). One of the two will be used. Which one is undefined.
+[INFO] Stopping server defaultServer.
+[INFO] Server defaultServer stopped.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.395 s
+[INFO] Finished at: 2017-10-31T16:12:35-05:00
+[INFO] Final Memory: 9M/309M
+[INFO] ------------------------------------------------------------------------
+```
 
 #### Docker file
 
@@ -126,6 +259,9 @@ CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
   - The first instruction gets the Opentracing Zipkin feature and installs it in your server.
   - The second instruction is a precondition to install all the utilities in the server.xml file. You can use the RUN command to install the utilities on the base image.
 - The `CMD` instruction provides defaults for an executing container.
+
+##### Running the application locally in a container
+
 
 #### [MicroService Builder](https://developer.ibm.com/microservice-builder/)
 
