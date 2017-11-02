@@ -12,7 +12,7 @@ This repository contains the **Java MicroProfile** implementation of the **Appet
 
 ### Introduction
 
-This project demonstrates the implementation of Appetizer Microservice. The appetizer microservice retrieves the list of appetizers from its data store. 
+This project demonstrates the implementation of Appetizer Microservice. The appetizer microservice retrieves the list of appetizers from its data store.
 
 - Based on [MicroProfile](https://microprofile.io/).
 - Integrated with the [MicroService Builder](https://developer.ibm.com/microservice-builder/).
@@ -51,11 +51,26 @@ You can make use of this feature by including this dependency in Maven.
 </dependency>
 ```
 
+You should also include a feature in [server.xml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer/blob/microprofile/src/main/liberty/config/server.xml).
+
+```
+<server description="Sample Liberty server">
+
+  <featureManager>
+      <feature>microprofile-1.2</feature>
+  </featureManager>
+
+  <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+      id="defaultHttpEndpoint" host="*" />
+
+</server>
+```
+
 #### Maven build
 
 Maven is a project management tool that is based on the Project Object Model (POM). Typically, people use Maven for project builds, dependencies, and documentation. Maven simplifies the project build. In this task, you use Maven to build the project.
 
-For Liberty, there is nice tool called [Liberty Accelerator](https://liberty-app-accelerator.wasdev.developer.ibm.com/start/) that generates a simple project based upon your configuration. Using this, you can build and deploy to Liberty either using the Maven or Gradle build. 
+For Liberty, there is nice tool called [Liberty Accelerator](https://liberty-app-accelerator.wasdev.developer.ibm.com/start/) that generates a simple project based upon your configuration. Using this, you can build and deploy to Liberty either using the Maven or Gradle build.
 
 <p align="center">
   <a href="https://microprofile.io/">
@@ -124,22 +139,34 @@ If you want to enable Zipkin OpenTracing feature, please include the below depen
 </dependency>
 ```
 
+If you are planning to include zipkin tracer in your application, please add the below feature to your [server.xml](https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer/blob/microprofile/src/main/liberty/config/server.xml).
+
+```
+<feature>opentracingZipkin-0.30</feature>
+```
+
 ##### Running the application locally using Maven Build
 
 1. Clone this repository.
+
    `git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer.git`
+
 2. Checkout MicroProfile branch.
+
    `git checkout microprofile`
+
 3. `cd refarch-cloudnative-wfd-appetizer/`
+
 4. Run this command. This command builds the project and installs it.
+
    `mvn install`
-   
+
    If this runs successfully, you will be able to see the below messages.
-   
+
 ```
 [INFO] --- maven-failsafe-plugin:2.18.1:verify (verify-results) @ WfdAppetizer ---
 [INFO] Failsafe report directory: /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/target/test-reports/it
-[INFO] 
+[INFO]
 [INFO] --- maven-install-plugin:2.4:install (default-install) @ WfdAppetizer ---
 [INFO] Installing /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/target/WfdAppetizer-1.0-SNAPSHOT.war to /Users/Hemankita.Perabathini@ibm.com/.m2/repository/projects/WfdAppetizer/1.0-SNAPSHOT/WfdAppetizer-1.0-SNAPSHOT.war
 [INFO] Installing /Users/Hemankita.Perabathini@ibm.com/PurpleCompute/Microprofile/WhatsForDinner/refarch-cloudnative-wfd-appetizer/pom.xml to /Users/Hemankita.Perabathini@ibm.com/.m2/repository/projects/WfdAppetizer/1.0-SNAPSHOT/WfdAppetizer-1.0-SNAPSHOT.pom
@@ -152,8 +179,9 @@ If you want to enable Zipkin OpenTracing feature, please include the below depen
 [INFO] ------------------------------------------------------------------------
 ```
 5. Now start your server.
+
    `mvn liberty:start-server`
-   
+
    You will see the below.
 ```
 [INFO] Starting server defaultServer.
@@ -171,10 +199,14 @@ If you want to enable Zipkin OpenTracing feature, please include the below depen
 ```
 6. Now, go to your browser and access the REST endpoint at http://localhost:9080/WfdAppetizer/rest/appetizer.
 
-**PIC**
-   
-   Access URL : http://<HOST>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>
-  
+<p align="center">
+  <a href="https://microprofile.io/">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/AppetizerScreen.png">
+  </a>
+</p>
+
+   Access URL : `http://<HOST>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>`
+
 In our sample application, you can get the details of the above URL as follows.
 
 - Since, we are running the application locally on our system, the **HOST** will be `localhost`.
@@ -212,6 +244,7 @@ Also, there is one more endpoint defined at [HealthEndpoint.java](https://github
 To access the health api, replace the **ENDPOINT** with `health`. This endpoint gives the health of your application. To check this, use http://localhost:9080/WfdAppetizer/rest/health.
 
 7. If you are done accessing the application, you can stop your server using the following command.
+
    `mvn liberty:stop-server`
 
 Once you do this, you see the below messages.
@@ -255,15 +288,71 @@ CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
 - The `COPY` instruction copies directories and files from a specified source to a destination in the container file system.
   - You're copying the `/target/liberty/wlp/usr/servers/defaultServer` to the `config` directory in the container.
   - You're replacing the contents of `/opt/ibm/wlp/usr/shared/` with the contents of `target/liberty/wlp/usr/shared`.
-- The `RUN` instruction runs the commands. 
+- The `RUN` instruction runs the commands.
   - The first instruction gets the Opentracing Zipkin feature and installs it in your server.
   - The second instruction is a precondition to install all the utilities in the server.xml file. You can use the RUN command to install the utilities on the base image.
 - The `CMD` instruction provides defaults for an executing container.
 
 ##### Running the application locally in a container
 
+1. Build the docker image.
 
-#### [MicroService Builder](https://developer.ibm.com/microservice-builder/)
+`docker build -t wfd-appetizer:microprofile .`
 
-### Running the application
+Once this is done, you will see something similar to the below messages.
+```
+Successfully built 83722dbad66c
+Successfully tagged wfd-appetizer:microprofile
+```
+You can see the docker images by using this command.
 
+`docker images`
+
+```
+REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
+wfd-appetizer                  microprofile        83722dbad66c        2 minutes ago       379MB
+```
+
+2. Run the docker image.
+
+`docker run -p 9080:9080 --name appetizer -t wfd-appetizer:microprofile`
+
+When it is done, you will see the following output.
+```
+[AUDIT   ] CWWKZ0058I: Monitoring dropins for applications.
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://24d5dd34c35a:9080/ibm/api/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://24d5dd34c35a:9080/health/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://24d5dd34c35a:9080/metrics/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://24d5dd34c35a:9080/jwt/
+[AUDIT   ] CWWKT0016I: Web application available (default_host): http://24d5dd34c35a:9080/WfdAppetizer/
+[AUDIT   ] CWWKZ0001I: Application WfdAppetizer-1.0-SNAPSHOT started in 1.062 seconds.
+[AUDIT   ] CWWKF0012I: The server installed the following features: [microProfile-1.2, mpFaultTolerance-1.0, servlet-3.1, ssl-1.0, jndi-1.0, mpHealth-1.0, appSecurity-2.0, jsonp-1.0, mpConfig-1.1, jaxrs-2.0, jaxrsClient-2.0, concurrent-1.0, jwt-1.0, mpMetrics-1.0, mpJwt-1.0, json-1.0, cdi-1.2, distributedMap-1.0].
+[AUDIT   ] CWWKF0011I: The server defaultServer is ready to run a smarter planet
+```
+3. Now, view the REST endpoint at http://localhost:9080/WfdAppetizer/rest/appetizer.
+
+<p align="center">
+  <a href="https://microprofile.io/">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/AppetizerScreen.png">
+  </a>
+</p>
+
+   Access URL : `http://<HOST>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>`
+
+5. Once you make sure the application is working as expected, you can come out of the process. You can do this by pressing Ctrl+C on the command line where the server was started.
+
+6. You can also remove the container if desired. This can be done in the following way.
+
+`docker ps`
+
+```
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS                              NAMES
+82865cf36207        wfd-appetizer:microprofile   "/opt/ibm/wlp/bin/..."   About an hour ago   Up About an hour    0.0.0.0:9080->9080/tcp, 9443/tcp   appetizer
+```
+
+Grab the container id.
+
+- Do `docker stop <CONTAINER ID>`
+In this case it will be, `docker stop 82865cf36207`
+- Do `docker rm <CONTAINER ID>`
+In this case it will be, `docker rm 82865cf36207`
