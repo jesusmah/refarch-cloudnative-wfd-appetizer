@@ -16,6 +16,9 @@ spec:
       containers:
       - name: "{{  .Chart.Name  }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - name: http
+          containerPort: 9080
         resources:
           requests:
             cpu: "{{ .Values.image.resources.requests.cpu }}"
