@@ -1,0 +1,19 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+revisionHistoryLimit: 1
+image:
+  repository: ibmcase
+  name: wfd-appetizer
+  tag: spring
+  pullPolicy: IfNotPresent
+  containerPort: 8081
+  resources:
+    requests:
+      cpu: 200m
+      memory: 300Mi
+service:
+  name: Node
+  type: NodePort
+  servicePort: 8081
+  servicePortHttps: 9443
