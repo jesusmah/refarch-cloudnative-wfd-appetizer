@@ -6,7 +6,7 @@ image:
   repository: ibmcase
   name: wfd-appetizer
   tag: spring
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   containerPort: 8081
   resources:
     requests:
@@ -14,6 +14,5 @@ image:
       memory: 300Mi
 service:
   name: Node
-  type: NodePort
+  type: ClusterIP
   servicePort: 8081
-  servicePortHttps: 9443
