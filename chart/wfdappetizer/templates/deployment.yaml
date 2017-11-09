@@ -16,9 +16,18 @@ spec:
       containers:
       - name: "{{  .Chart.Name  }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{ if .Values.istio.enabled }}
+{{ else }}
         ports:
         - name: http
           containerPort: 9080
+        readinessProbe:
+          httpGet:
+            path: /WfdAppetizer/rest/appetizer
+            port: 9080
+          initialDelaySeconds: 30
+{{ end }}
         resources:
           requests:
             cpu: "{{ .Values.image.resources.requests.cpu }}"
@@ -58,41 +67,3 @@ spec:
                 name: apm-server-config
                 key: ibm_apm_access_token
                 optional: true
-          - name: MB_KEYSTORE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mb-keystore-password
-                key: password
-          - name: MB_TRUSTSTORE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: mb-truststore-password
-                key: password
-        volumeMounts:
-          - name: keystores
-            mountPath: /etc/wlp/config/keystore
-            readOnly: true
-          - name: truststores
-            mountPath: /etc/wlp/config/truststore
-            readOnly: true
-          - name: liberty-config
-            mountPath: /config/configDropins
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        readinessProbe:
-          httpGet:
-            path: /WfdAppetizer/rest/appetizer
-            port: 9080
-          initialDelaySeconds: 20
-      volumes:
-        - name: keystores
-          secret:
-            secretName: mb-keystore
-        - name: truststores
-          secret:
-            secretName: mb-truststore
-        - name: liberty-config
-          configMap:
-            name: liberty-config
-            items:
-              - key: keystore.xml
-                path: defaults/keystore.xml
