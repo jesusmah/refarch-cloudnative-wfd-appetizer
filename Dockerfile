@@ -11,3 +11,12 @@ RUN wget -t 10 -x -nd -P /opt/ibm/wlp/usr https://repo1.maven.org/maven2/net/was
 RUN installUtility install --acceptLicense defaultServer
 
 CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
+
+# Upgrade to production license if URL to JAR provided
+ARG LICENSE_JAR_URL
+RUN \
+  if [ $LICENSE_JAR_URL ]; then \
+    wget $LICENSE_JAR_URL -O /tmp/license.jar \
+    && java -jar /tmp/license.jar -acceptLicense /opt/ibm \
+    && rm /tmp/license.jar; \
+  fi

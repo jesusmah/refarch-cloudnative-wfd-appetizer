@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: wfd-appetizer
-        image: ibmcase/wfd-appetizer:microprofile
+        image: wfdappetizer:v1.0.0
         readinessProbe:
           httpGet:
             path: /WfdAppetizer/rest/appetizer
