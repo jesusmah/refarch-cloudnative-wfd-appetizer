@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-configmap
+  labels:
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: wfdappetizer
+data:
+  application.yaml: |+
+    spring:
+      sleuth:
+        sampler:
+          percentage: 1.0
+      zipkin:
+        baseUrl: http://{{ .Values.zipkin.service }}:{{ .Values.zipkin.port }}
+
+    server:
+      port: {{ .Values.image.containerPort }}
+
+    eureka:
+      client:
+        serviceUrl:
+           defaultZone: http://{{ .Values.eureka.service }}:{{ .Values.eureka.port }}/eureka/
+      instance:
+        preferIpAddress: {{ .Values.eureka.preferIpAddress }}
+
+    wfd:
+      appetizer:
+        order: 1
+        type: appetizer
+        menu:
+          - Hummus
+          - Crab Cakes
+          - Mozzerella Sticks
+
+  bootstrap.yaml: |+
+    spring:
+      application:
+        name: wfdappetizer-service

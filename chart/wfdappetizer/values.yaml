@@ -5,7 +5,7 @@ revisionHistoryLimit: 1
 image:
   repository: ibmcase
   name: wfd-appetizer
-  tag: spring
+  tag: spring-cloud
   pullPolicy: IfNotPresent
   containerPort: 8081
   resources:
@@ -16,4 +16,10 @@ service:
   name: Node
   type: NodePort
   servicePort: 8081
-  servicePortHttps: 9443
+zipkin:
+  service: spring-stack-zipkin-server
+  port: 9411
+eureka:
+  service: spring-stack-spring-eureka-server
+  port: 8761
+  preferIpAddress: true

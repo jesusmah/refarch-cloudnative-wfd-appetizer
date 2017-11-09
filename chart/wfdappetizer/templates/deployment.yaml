@@ -22,13 +22,17 @@ spec:
           containerPort: {{ .Values.image.containerPort }}
         readinessProbe:
           httpGet:
-            path: /appetizers
+            path: /health
             port: {{ .Values.image.containerPort }}
           initialDelaySeconds: 20
         resources:
           requests:
             cpu: "{{ .Values.image.resources.requests.cpu }}"
             memory: "{{ .Values.image.resources.requests.memory }}"
-        env:
-          - name: PORT
-            value: "{{ .Values.service.servicePort }}"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        configMap:
+          name: "{{ .Chart.Name }}-configmap"
