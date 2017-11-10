@@ -37,7 +37,8 @@ spec:
           httpGet:
             path: /WfdAppetizer/rest/appetizer
             port: 9080
-          initialDelaySeconds: 30
+          initialDelaySeconds: 40
+          timeoutSeconds: 15
         # resources:
         #   requests:
         #     cpu: 100m
