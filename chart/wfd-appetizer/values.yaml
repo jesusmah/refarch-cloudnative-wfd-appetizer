@@ -14,7 +14,7 @@ image:
       memory: 300Mi
 service:
   name: Node
-  type: NodePort
+  type: ClusterIP
   servicePort: 8081
 zipkin:
   service: spring-stack-zipkin-server
@@ -23,3 +23,6 @@ eureka:
   service: spring-stack-spring-eureka-server
   port: 8761
   preferIpAddress: true
+config:
+  service: spring-stack-spring-config-server
+  port: 8888
