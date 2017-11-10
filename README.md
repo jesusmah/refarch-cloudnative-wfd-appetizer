@@ -5,8 +5,16 @@
 This repository contains the **Java MicroProfile** implementation of the **Appetizer Service** which is a part of microservice-based reference application called **What's For Dinner** that can be found in https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd
 
 <p align="center">
+  <a href="https://www.ibm.com/us-en/marketplace/microservice-builder/">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB.jpg" width="300" height="100">
+  </a>
+  &nbsp;
   <a href="https://microprofile.io/">
-    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/microprofile_small.png">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/microprofile_small.png" width="300" height="100">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://www.ibm.com/cloud-computing/solutions/private-cloud/">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/ICP.jpg" width="120" height="100">
   </a>
 </p>
 
@@ -16,14 +24,15 @@ This repository contains the **Java MicroProfile** implementation of the **Appet
 4. [Implementation](#implementation)
     1. [Microprofile](#microprofile)
     2. [Maven build](#maven-build)
-        - [Running the application locally using Maven Build](running-the-application-locally-using-Maven-Build)
-    3. [Docker file](docker-file)
-        - [Running the application locally in a docker container](running-the-application-locally-in-a-docker-container)
+        - [Running the application locally using Maven Build](#running-the-application-locally-using-Maven-Build)
+    3. [Docker file](#docker-file)
+        - [Running the application locally in a docker container](#running-the-application-locally-in-a-docker-container)
     4. [Microservice Builder](#microservice-builder)
-        1. [Minikube development Environment](minikube-development-environment)
-           - [Running the application on Minikube](running-the-application-on-minikube)
-        - [IBM Cloud Private](ibm-cloud-private)
-           - [Running the application on IBM Cloud Private](running-the-application-on-ibm-cloud-private)
+        1. [Minikube development Environment](#minikube-development-environment)
+           - [Running the application on Minikube](#running-the-application-on-minikube)
+        2. [IBM Cloud Private](#ibm-cloud-private)
+           - [Running the application on IBM Cloud Private](#running-the-application-on-ibm-cloud-private)
+5. [References](#references)
 
 ### Introduction
 
@@ -593,7 +602,7 @@ In the above case, the access url will be `http://192.168.99.100:30073/WfdAppeti
 
 <p align="center">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/appetizer_minikube.png">
-</p>c
+</p>
 
 ##### [IBM Cloud Private](https://www.ibm.com/cloud-computing/solutions/private-cloud/)
 
@@ -652,3 +661,74 @@ Once you have all this, you are ready to deploy your microservice to Microservic
 - Now you have your microservice builder pipeline configured.
 - Push the project to the repository that is monitored by your micro service builder pipeline.
 - It will automatically pick the project, build it and deploy it to IBM cloud private.
+
+From IBM cloud private dashboard, you can access the MSB pipeline from your services. The jenkins pipeline is as follows.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/jenkinsscreeen.png">
+</p>
+
+By clicking on the name of your organization, you can find all the MSB enabled repositories here.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/Orgscreen.png">
+</p>
+
+By clicking on the **refarch-cloudnative-wfd-appetizer**, you can see the below screen.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/jenkinsappscreen.png">
+</p>
+
+If you see a blue ball there, your service is successfully built and running fine. If it red, it means you have some problems with it.
+
+Whenever you do some changes and push the code to this repository, MSB build queue will initiate the process.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/MSBbuildqueue.png">
+</p>
+
+Once this is done, Jenkins slave will be called.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/jenkinsslaveinit.png">
+</p>
+
+Then the Jenkins slave will pick up the build and initiate the process.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/jenkinsslave%20build.png">
+</p>
+
+Then the build will begin and starts running.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/build.png">
+</p>
+
+Finally your service gets deployed once the build is done.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/completedbuild.png">
+</p>
+
+To access your service, go to IBM Cloud Private dashboard.
+- Go to **Workload > Services > wfdappetizer-service** and click on it.
+- You can see the service like below.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/wfdappetizerservice.png">
+</p>
+
+Click on the **http** link there. You will be redirected to the Server page. Append **/WfdAppetizer/rest/appetizer** to the url and you will be able to see the Appetizer service.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/MSB_jenkins/appetizerICP.png">
+</p>
+
+### References
+
+1. [Microservice Builder](https://www.ibm.com/support/knowledgecenter/en/SS5PWC/intro-microservice-builder.html)
+2. [Developer Tools CLI](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
+3. [IBM Cloud Private](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/kc_welcome_containers.html)
+4. [Micrprofile](https://microprofile.io/)
