@@ -10,6 +10,21 @@ This repository contains the **Java MicroProfile** implementation of the **Appet
   </a>
 </p>
 
+1. [Introduction](#introduction)
+2. [How it works](#how-it-works)
+3. [API Endpoints](#api-endpoints)
+4. [Implementation](#implementation)
+    1. [Microprofile](#microprofile)
+    2. [Maven build](#maven-build)
+        - [Running the application locally using Maven Build](running-the-application-locally-using-Maven-Build)
+    3. [Docker file](docker-file)
+        - [Running the application locally in a docker container](running-the-application-locally-in-a-docker-container)
+    4. [Microservice Builder](#microservice-builder)
+        1. [Minikube development Environment](minikube-development-environment)
+           - [Running the application on Minikube](running-the-application-on-minikube)
+        - [IBM Cloud Private](ibm-cloud-private)
+           - [Running the application on IBM Cloud Private](running-the-application-on-ibm-cloud-private)
+
 ### Introduction
 
 This project demonstrates the implementation of Appetizer Microservice. The appetizer microservice retrieves the list of appetizers from its data store.
@@ -22,7 +37,7 @@ This project demonstrates the implementation of Appetizer Microservice. The appe
 
 Appetizer Microservice serves [**What's For Dinner**](https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd), Microservice-based reference application. Though it is a part of a bigger application, Appetizer service is itself an application in turn that gets the data from data store. This service reads the data and returns it through a REST service.
 
-### Endpoints
+### API Endpoints
 
 ```
 GET     /WfdAppetizer/rest/health/        # Health check of the service
@@ -73,17 +88,13 @@ Maven is a project management tool that is based on the Project Object Model (PO
 For Liberty, there is nice tool called [Liberty Accelerator](https://liberty-app-accelerator.wasdev.developer.ibm.com/start/) that generates a simple project based upon your configuration. Using this, you can build and deploy to Liberty either using the Maven or Gradle build.
 
 <p align="center">
-  <a href="https://microprofile.io/">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/LibertyAcc_Home.png">
-  </a>
 </p>
 
 Just check the options of your choice and click Generate project. You can either Download it as a zip or you can create git project.
 
 <p align="center">
-  <a href="https://microprofile.io/">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/LibertyAcc_PrjGen.png">
-  </a>
 </p>
 
 Once you are done with this, you will have a sample microprofile based application that you can deploy on Liberty.
@@ -200,9 +211,7 @@ If you are planning to include zipkin tracer in your application, please add the
 6. Now, go to your browser and access the REST endpoint at http://localhost:9080/WfdAppetizer/rest/appetizer.
 
 <p align="center">
-  <a href="https://microprofile.io/">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/AppetizerScreen.png">
-  </a>
 </p>
 
    Access URL : `http://<HOST>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>`
@@ -293,9 +302,23 @@ CMD ["/opt/ibm/wlp/bin/server", "run", "defaultServer"]
   - The second instruction is a precondition to install all the utilities in the server.xml file. You can use the RUN command to install the utilities on the base image.
 - The `CMD` instruction provides defaults for an executing container.
 
-##### Running the application locally in a container
+##### Running the application locally in a docker container
 
-1. Build the docker image.
+1. Clone this repository.
+
+   `git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer.git`
+
+2. Checkout MicroProfile branch.
+
+   `git checkout microprofile`
+
+3. `cd refarch-cloudnative-wfd-appetizer/`
+
+4. Run this command. This command builds the project and installs it.
+
+   `mvn install`
+
+5. Build the docker image.
 
 `docker build -t wfd-appetizer:microprofile .`
 
@@ -313,7 +336,7 @@ REPOSITORY                     TAG                 IMAGE ID            CREATED  
 wfd-appetizer                  microprofile        83722dbad66c        2 minutes ago       379MB
 ```
 
-2. Run the docker image.
+6. Run the docker image.
 
 `docker run -p 9080:9080 --name appetizer -t wfd-appetizer:microprofile`
 
@@ -329,19 +352,17 @@ When it is done, you will see the following output.
 [AUDIT   ] CWWKF0012I: The server installed the following features: [microProfile-1.2, mpFaultTolerance-1.0, servlet-3.1, ssl-1.0, jndi-1.0, mpHealth-1.0, appSecurity-2.0, jsonp-1.0, mpConfig-1.1, jaxrs-2.0, jaxrsClient-2.0, concurrent-1.0, jwt-1.0, mpMetrics-1.0, mpJwt-1.0, json-1.0, cdi-1.2, distributedMap-1.0].
 [AUDIT   ] CWWKF0011I: The server defaultServer is ready to run a smarter planet
 ```
-3. Now, view the REST endpoint at http://localhost:9080/WfdAppetizer/rest/appetizer.
+7. Now, view the REST endpoint at http://localhost:9080/WfdAppetizer/rest/appetizer.
 
 <p align="center">
-  <a href="https://microprofile.io/">
     <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/master/static/imgs/AppetizerScreen.png">
-  </a>
 </p>
 
    Access URL : `http://<HOST>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>`
 
-5. Once you make sure the application is working as expected, you can come out of the process. You can do this by pressing Ctrl+C on the command line where the server was started.
+8. Once you make sure the application is working as expected, you can come out of the process. You can do this by pressing Ctrl+C on the command line where the server was started.
 
-6. You can also remove the container if desired. This can be done in the following way.
+9. You can also remove the container if desired. This can be done in the following way.
 
 `docker ps`
 
@@ -356,3 +377,224 @@ Grab the container id.
 In this case it will be, `docker stop 82865cf36207`
 - Do `docker rm <CONTAINER ID>`
 In this case it will be, `docker rm 82865cf36207`
+
+#### [Microservice Builder](https://www.ibm.com/us-en/marketplace/microservice-builder)
+
+Microservice Builder helps us to develop and deploy microservice based applications. It helps us to maintain the application end to end from development to production supporting continuous delivery. Using the pre-integrated Devops pipeline, developers can rapidly build innovative services and deploy them easily.   
+
+##### Minikube development Environment
+
+You can always test your application locally using [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/) in a local kubernetes environment. It runs a single-node Kubernetes cluster inside a VM.
+
+Before running the application, do the below.
+
+1. Install [Docker](https://docs.docker.com/engine/installation/)
+2. Install [Minikube](https://kubernetes.io/docs/getting-started-guides/minikube/#installation)
+3. Install [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) cli
+
+**Setting up your environment**
+
+1. Start your minikube. Run the below command.
+
+`minikube start`
+
+You will see output similar to this.
+
+```
+Setting up certs...
+Connecting to cluster...
+Setting up kubeconfig...
+Starting cluster components...
+Kubectl is now configured to use the cluster.
+```
+
+2. To install Tiller which is a server side component of Helm, initialize helm. Run the below command.
+
+`helm init`
+
+If it is successful, you will see the below output.
+
+```
+$HELM_HOME has been configured at /Users/Hemankita.Perabathini@ibm.com/.helm.
+
+Tiller (the helm server side component) has been installed into your Kubernetes Cluster.
+Happy Helming!
+```
+
+3. Check if your tiller is available. Run the below command.
+
+`kubectl get deployment tiller-deploy --namespace kube-system`
+
+If it available, you can see the availability as below.
+
+```
+NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+tiller-deploy   1         1         1            1           1m
+```
+
+4. Run the below command to add IBM helm repository
+
+`helm repo add ibm-charts https://raw.githubusercontent.com/IBM/charts/master/repo/stable/`
+
+If added, you will see the below message.
+
+```
+"ibm-charts" has been added to your repositories
+```
+
+5. To install microservice builder fabric using helm, run the below command.
+
+`helm install --name fabric ibm-charts/ibm-microservicebuilder-fabric`
+
+If you see something like the below message, your tiller version is not compatible.T
+
+```
+Error: Chart incompatible with Tiller v2.4.2
+```
+
+Sometimes the version of helm installed by Kubernetes package manager might not be compatible. If you are encountering a problem, please upgrade your helm tiller version to packages 2.5.0 or higher. You can do this using the below command.
+
+`helm init --upgrade --tiller-image gcr.io/kubernetes-helm/tiller:v2.5.0`
+
+If the command is successful, you will see the below message.
+
+```
+Tiller (the helm server side component) has been upgraded to the current version.
+Happy Helming!
+```
+
+6. Verify your helm version before proceeding like below.
+
+`helm version`
+
+You will see the below output.
+
+```
+Client: &version.Version{SemVer:"v2.4.2", GitCommit:"82d8e9498d96535cc6787a6a9194a76161d29b4c", GitTreeState:"clean"}
+Server: &version.Version{SemVer:"v2.5.0", GitCommit:"012cb0ac1a1b2f888144ef5a67b8dab6c2d45be6", GitTreeState:"clean"}
+```
+
+7. Run `helm install --name fabric ibm-charts/ibm-microservicebuilder-fabric`
+
+```
+Get the Zipkin URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app=fabric-zipkin" -o jsonpath="{.items[0].metadata.name}")
+  kubectl port-forward $POD_NAME 9411:9411
+  echo "Visit http://127.0.0.1:9411 to use your application"
+```
+
+8. Check if your fabric zipkin deployment is available. You can do this by running the below command.
+
+`kubectl get deployment fabric-zipkin`
+
+If it is available, you can see the below message.
+
+```
+NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+fabric-zipkin   1         1         1            1           46s
+```
+
+##### Running the application on Minikube
+
+1. Clone this repository.
+
+   `git clone https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd-appetizer.git`
+
+2. Checkout MicroProfile branch.
+
+   `git checkout microprofile`
+
+3. `cd refarch-cloudnative-wfd-appetizer/`
+
+4. Run this command. This command builds the project and installs it.
+
+   `mvn install`
+
+5. For your information, this repository is enabled using [IBM Cloud Developer Tools CLI](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli). By using `bx dev enable`, based upon your language, it generates and adds files that can be used for local Docker containers, or Kubernetes/Container Deployment etc. You can nicely make use of those templates and customize the files based upon your information.
+
+6. Build the docker image.
+
+Before building the docker image, set the docker environment.
+
+- Run the beow command.
+
+`minikube docker-env`
+
+You will see the output similar to this.
+
+```
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="/Users/Hemankita.Perabathini@ibm.com/.minikube/certs"
+export DOCKER_API_VERSION="1.23"
+# Run this command to configure your shell:
+# eval $(minikube docker-env)
+```
+
+- For configuring your shell, run the below command.
+
+`eval $(minikube docker-env)`
+
+- Now run the docker build.
+
+`docker build -t wfdappetizer:v1.0.0 .`
+
+If it is a success, you will see the below output.
+
+```
+Successfully built cff1697e7306
+Successfully tagged wfdappetizer:v1.0.0
+```
+
+7. Run the helm chart as below.
+
+`helm install --name=wfdappetizer chart/wfdappetizer`
+
+Yow will see message like below.
+
+```
+==> v1beta1/Deployment
+NAME                     DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+wfdappetizer-deployment  1        1        1           0          0s
+```
+
+Please wait till your deployment is ready. To verify run the same command and you should see the availability.
+
+```
+==> v1beta1/Deployment
+NAME                     DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+wfdappetizer-deployment  1        1        1           1          30s
+```
+
+8. You can access the application at `http://<MinikubeIP>:<PORT>/<WAR_CONTEXT>/<APPLICATION_PATH>/<ENDPOINT>`. To get the access url.
+
+- To get the IP, Run this command.
+
+`minikube ip`
+
+You will see something like below.
+
+```
+192.168.99.100
+```
+
+- To get the port, run this command.
+
+`kubectl get service wfdappetizer-service`
+
+You will see something like below.
+
+```
+NAME                   CLUSTER-IP   EXTERNAL-IP   PORT(S)                         AGE
+wfdappetizer-service   10.0.0.16    <nodes>       9080:30073/TCP,9443:30860/TCP   4m
+```
+
+In the above case, the access url will be `http://192.168.99.100:30073/WfdAppetizer/rest/appetizer`.
+
+<p align="center">
+    <img src="https://github.com/ibm-cloud-architecture/refarch-cloudnative-wfd/blob/microprofile/static/imgs/appetizer_minikube.png">
+</p>c
+
+##### IBM Cloud Private
+
+##### Running the application on IBM Cloud Private
