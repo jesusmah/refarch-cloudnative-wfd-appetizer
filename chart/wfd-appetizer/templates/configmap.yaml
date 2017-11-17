@@ -41,3 +41,4 @@ data:
         config:
           enabled: true
           uri: http://{{ .Values.config.service }}:{{ .Values.config.port }}
+          label: {{ .Values.config.branch }}

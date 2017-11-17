@@ -6,7 +6,7 @@ image:
   repository: ibmcase
   name: wfd-appetizer
   tag: spring-cloud
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   containerPort: 8081
   resources:
     requests:
@@ -26,3 +26,4 @@ eureka:
 config:
   service: spring-stack-spring-config-server
   port: 8888
+  branch: spring-cloud
