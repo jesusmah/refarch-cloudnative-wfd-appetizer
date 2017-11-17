@@ -613,6 +613,8 @@ Basically this is an on-premise platform.
 2. Kubernetes based container orchestrator
 3. Graphical user interface
 
+You can find the detailed installation instructions for IBM Cloud Private [here](https://github.com/ibm-cloud-architecture/refarch-privatecloud)
+
 Microservice builder has an option to deploy with IBM Cloud Private. You can set it IBM Private Cloud with Microservice Builder pipeline to deploy the microservices.
 
 **Setting up your environment**
@@ -731,4 +733,5 @@ Click on the **http** link there. You will be redirected to the Server page. App
 1. [Microservice Builder](https://www.ibm.com/support/knowledgecenter/en/SS5PWC/intro-microservice-builder.html)
 2. [Developer Tools CLI](https://console.bluemix.net/docs/cloudnative/dev_cli.html#developercli)
 3. [IBM Cloud Private](https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/kc_welcome_containers.html)
-4. [Microprofile](https://microprofile.io/)
+4. [IBM Cloud Private Installation](https://github.com/ibm-cloud-architecture/refarch-privatecloud)
+5. [Microprofile](https://microprofile.io/)
