@@ -1,8 +1,6 @@
 podTemplate(label: 'mypod',
     volumes: [
         hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-        secretVolume(secretName: 'registry-account', mountPath: '/var/run/secrets/registry-account'),
-        configMapVolume(configMapName: 'registry-config', mountPath: '/var/run/configs/registry-config')
     ],
     containers: [
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
@@ -24,15 +22,12 @@ podTemplate(label: 'mypod',
         sh 'mvn clean package'
       }
     }
-    
+
     container("docker") {
       stage('Build image') {
         sh """
         #!/bin/sh
-        NAMESPACE=`cat /var/run/configs/registry-config/namespace`
-        REGISTRY=`cat /var/run/configs/registry-config/registry`
-
-        docker build -t \${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
+        docker build -t \${params.DOCKER_REGISTRY}/\${params.NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
         """
 
 
@@ -42,17 +37,12 @@ podTemplate(label: 'mypod',
         withCredentials([usernamePassword(credentialsId: 'icp_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh """
           #!/bin/sh
-          NAMESPACE=`cat /var/run/configs/registry-config/namespace`
-          REGISTRY=`cat /var/run/configs/registry-config/registry`
 
           set +x
-          DOCKER_USER=`cat /var/run/secrets/registry-account/username`
-          DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
-          #docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
-          docker login -u=${USERNAME} -p=${PASSWORD} \${REGISTRY}
-
+          docker login -u=${USERNAME} -p=${PASSWORD} \${params.REGISTRY}
           set -x
-          docker push \${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+
+          docker push \${params.DOCKER_REGISTRY}/\${params.NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
           """
         }
       }
@@ -61,13 +51,11 @@ podTemplate(label: 'mypod',
       stage('Deploy application') {
         sh """
           #!/bin/bash
-          NAMESPACE=`cat /var/run/configs/registry-config/namespace`
-          REGISTRY=`cat /var/run/configs/registry-config/registry`
 
           DEPLOYMENT=`kubectl get deployments | grep wfd-appetizer | awk '{print \$1}'`
 
           # Update Deployment
-          kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=\${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+          kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=\${params.DOCKER_REGISTRY}/\${params.NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
           kubectl rollout status deployment/\${DEPLOYMENT}
         """
       }
