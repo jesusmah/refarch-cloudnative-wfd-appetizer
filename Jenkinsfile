@@ -8,7 +8,7 @@ podTemplate(label: 'mypod',
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker' , image: 'docker:17.11.0-ce', ttyEnabled: true, command: 'cat')
   ]) {
-  
+
   node("mypod") {
     def app
 
@@ -28,30 +28,33 @@ podTemplate(label: 'mypod',
     container("docker") {
       stage('Build image') {
         sh """
-        #!/bin/sh 
-        NAMESPACE=`cat /var/run/configs/registry-config/namespace` 
-        REGISTRY=`cat /var/run/configs/registry-config/registry` 
-        
-        docker build -t \${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
-        """
-
-          
-      }
-
-      stage('Push image') {
-        sh """
         #!/bin/sh
         NAMESPACE=`cat /var/run/configs/registry-config/namespace`
         REGISTRY=`cat /var/run/configs/registry-config/registry`
-        
-        set +x
-        DOCKER_USER=`cat /var/run/secrets/registry-account/username`
-        DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
-        docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
-        
-        set -x
-        docker push \${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+
+        docker build -t \${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
         """
+
+
+      }
+
+      stage('Push image') {
+        withCredentials([usernamePassword(credentialsId: 'icp_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          sh """
+          #!/bin/sh
+          NAMESPACE=`cat /var/run/configs/registry-config/namespace`
+          REGISTRY=`cat /var/run/configs/registry-config/registry`
+
+          set +x
+          DOCKER_USER=`cat /var/run/secrets/registry-account/username`
+          DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
+          #docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
+          docker login -u=\${USERNAME} -p=\${PASSWORD} \${REGISTRY}
+
+          set -x
+          docker push \${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+          """
+        }
       }
     }
     container("kubectl") {
@@ -60,7 +63,7 @@ podTemplate(label: 'mypod',
           #!/bin/bash
           NAMESPACE=`cat /var/run/configs/registry-config/namespace`
           REGISTRY=`cat /var/run/configs/registry-config/registry`
-          
+
           DEPLOYMENT=`kubectl get deployments | grep wfd-appetizer | awk '{print \$1}'`
 
           # Update Deployment
