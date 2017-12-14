@@ -27,7 +27,7 @@ podTemplate(label: 'mypod',
       stage('Build image') {
         sh """
         #!/bin/sh
-        docker build -t ${params.DOCKER_REGISTRY}/${params.NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
+        docker build -t ${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
         """
 
       }
