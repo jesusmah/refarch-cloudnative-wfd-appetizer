@@ -38,10 +38,10 @@ podTemplate(label: 'mypod',
           #!/bin/sh
 
           set +x
-          docker login -u=${USERNAME} -p=${PASSWORD} ${params.DOCKER_REGISTRY}
+          docker login -u=${USERNAME} -p=${PASSWORD} ${params.docker_registry}
           set -x
 
-          docker push ${params.DOCKER_REGISTRY}/${params.NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+          docker push ${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER}
           """
         }
       }
@@ -54,7 +54,7 @@ podTemplate(label: 'mypod',
           DEPLOYMENT=`kubectl get deployments | grep wfd-appetizer | awk '{print \$1}'`
 
           # Update Deployment
-          kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=${params.DOCKER_REGISTRY}/${params.NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+          kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER}
           kubectl rollout status deployment/\${DEPLOYMENT}
         """
       }
