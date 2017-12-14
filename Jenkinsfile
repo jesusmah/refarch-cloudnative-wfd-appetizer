@@ -24,8 +24,18 @@ podTemplate(label: 'mypod',
         sh 'mvn clean package'
       }
     }
+    stage('Build image') {
 
-    container("docker") {
+       app = docker.build("${params.namespace}/wfd-appetizer-spring")
+    }
+
+     stage('Push image') {
+         // Finally, we'll push the image
+         docker.withRegistry('${params.docker_registry}', 'icp_credentials') {
+             app.push("${env.BUILD_NUMBER}")
+         }
+     }
+  /*  container("docker") {
       stage('Build image') {
         sh """
         #!/bin/sh
@@ -56,7 +66,7 @@ podTemplate(label: 'mypod',
           """
         }
       }
-    }
+    } */
     container("kubectl") {
       stage('Deploy application') {
         sh """
