@@ -49,7 +49,7 @@ podTemplate(label: 'mypod',
           DOCKER_USER=`cat /var/run/secrets/registry-account/username`
           DOCKER_PASSWORD=`cat /var/run/secrets/registry-account/password`
           #docker login -u=\${DOCKER_USER} -p=\${DOCKER_PASSWORD} \${REGISTRY}
-          docker login -u=\${USERNAME} -p=\${PASSWORD} \${REGISTRY}
+          docker login -u=${USERNAME} -p=${PASSWORD} \${REGISTRY}
 
           set -x
           docker push \${REGISTRY}/\${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
