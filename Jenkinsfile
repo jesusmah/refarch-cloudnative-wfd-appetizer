@@ -40,7 +40,11 @@ podTemplate(label: 'mypod',
 
     container("maven") {
       stage('Compile code') {
-        sh 'mvn clean package'
+        sh '''
+        printenv
+        echo \${user.home}
+        mvn clean package
+        '''
       }
     }
 
