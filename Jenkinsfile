@@ -41,8 +41,11 @@ podTemplate(label: 'mypod',
     container("maven") {
       stage('Compile code') {
         sh '''
-        printenv
-        echo \${user.home}
+        printenv | grep MAVEN
+        if [ "${params.maven_config}" != "null" ]; then
+          export MAVEN_CONFIG="${params.maven_config}"
+        fi
+        printenv | grep MAVEN
         mvn clean package
         '''
       }
