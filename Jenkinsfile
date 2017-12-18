@@ -42,6 +42,7 @@ podTemplate(label: 'mypod',
       stage('Compile code') {
         sh '''
         #!/bin/bash
+        set +x
         printenv | grep MAVEN
         if [ "${params.maven_config}" != "null" ]; then
           export MAVEN_CONFIG="${params.maven_config}"
