@@ -45,7 +45,7 @@ podTemplate(label: 'mypod',
         set +x
         printenv | grep MAVEN
           echo "BLABLABLABLA"
-          echo "${params.maven_config}"
+          echo "${params.release_name}"
         printenv | grep MAVEN
         exit 1
         mvn clean package
