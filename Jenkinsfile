@@ -40,16 +40,13 @@ podTemplate(label: 'mypod',
 
     container("maven") {
       stage('Compile code') {
-        sh '''
+        sh """
         #!/bin/bash
-        set +x
-        printenv | grep MAVEN
           echo "BLABLABLABLA"
           echo "${params.release_name}"
-        printenv | grep MAVEN
         exit 1
         mvn clean package
-        '''
+        """
       }
     }
 
