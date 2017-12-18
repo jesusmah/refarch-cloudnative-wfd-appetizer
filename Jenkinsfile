@@ -43,7 +43,7 @@ podTemplate(label: 'mypod',
         sh """
         #!/bin/bash
           echo "BLABLABLABLA"
-          echo "${params.release_name}"
+          echo "${params.maven_config}"
         exit 1
         mvn clean package
         """
