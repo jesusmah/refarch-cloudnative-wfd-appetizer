@@ -44,10 +44,8 @@ podTemplate(label: 'mypod',
         #!/bin/bash
         set +x
         printenv | grep MAVEN
-        //if [ "null" = "null" ]; then
           echo "BLABLABLABLA"
           export MAVEN_CONFIG="${params.maven_config}"
-        //fi
         printenv | grep MAVEN
         exit 1
         mvn clean package
