@@ -19,8 +19,6 @@ podTemplate(label: 'mypod',
 
     container("maven") {
       stage('Compile code') {
-
-      //withMaven(maven: 'maven') {
         sh 'mvn clean package'
       }
     }
@@ -53,7 +51,7 @@ podTemplate(label: 'mypod',
         sh """
           #!/bin/bash
 
-          DEPLOYMENT=`kubectl get deployments | grep wfd-appetizer | awk '{print \$1}'`
+          DEPLOYMENT=`kubectl get deployments | grep ${params.release_name} | grep wfd-appetizer | awk '{print \$1}'`
 
           # Update Deployment
           kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER}
