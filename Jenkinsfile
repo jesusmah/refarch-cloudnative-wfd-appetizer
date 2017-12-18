@@ -24,7 +24,7 @@ podTemplate(label: 'mypod',
       echo "[ERROR]: A namespace has not been declared. Please declare a namespace in your Jenkins docker_registry pipeline variable"
       exit 1
     fi
-    if [ -z "${params.release_name}" ]; then
+    if [ "${params.release_name}" = "null" ]; then
       echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins docker_registry pipeline variable"
       exit 1
     fi
