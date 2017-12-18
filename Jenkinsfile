@@ -11,6 +11,27 @@ podTemplate(label: 'mypod',
   node("mypod") {
     def app
 
+    stage('Environment check') {
+    /* Check if all environment requirements are present before going ahead */
+
+    sh """
+    #!/bin/bash
+    if [ -n "${params.docker_registry}" ]; then
+      echo "[ERROR]: A Docker registry has not been declared. Please declare your Docker registry in your Jenkins docker_registry pipeline variable"
+      exit 1
+    fi
+    if [ -n "${params.namespace}" ]; then
+      echo "[ERROR]: A namespace has not been declared. Please declare a namespace in your Jenkins docker_registry pipeline variable"
+      exit 1
+    fi
+    if [ -n "${params.release_name}" ]; then
+      echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins docker_registry pipeline variable"
+      exit 1
+    fi
+    """
+
+    }
+
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
 
@@ -26,7 +47,8 @@ podTemplate(label: 'mypod',
     container("docker") {
       stage('Build image') {
         sh """
-        #!/bin/sh
+        #!/bin/bash
+
         docker build -t ${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
         """
 
@@ -35,7 +57,7 @@ podTemplate(label: 'mypod',
       stage('Push image') {
         withCredentials([usernamePassword(credentialsId: 'icp_credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh """
-          #!/bin/sh
+          #!/bin/bash
 
           set +x
           docker login -u=${USERNAME} -p=${PASSWORD} ${params.docker_registry}
