@@ -3,6 +3,7 @@ podTemplate(label: 'mypod',
         hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
     ],
     containers: [
+        containerTemplate(name: 'maven', image: 'maven:3.5.2-alpine', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'docker' , image: 'docker:17.11.0-ce', ttyEnabled: true, command: 'cat')
   ]) {
@@ -16,9 +17,10 @@ podTemplate(label: 'mypod',
         checkout scm
     }
 
-    stage('Compile code') {
+    container("maven") {
+      stage('Compile code') {
 
-      withMaven(maven: 'maven') {
+      //withMaven(maven: 'maven') {
         sh 'mvn clean package'
       }
     }
