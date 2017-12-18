@@ -16,15 +16,15 @@ podTemplate(label: 'mypod',
 
     sh """
     #!/bin/bash
-    if [ -n "${params.docker_registry}" ]; then
+    if [ -z "${params.docker_registry}" ]; then
       echo "[ERROR]: A Docker registry has not been declared. Please declare your Docker registry in your Jenkins docker_registry pipeline variable"
       exit 1
     fi
-    if [ -n "${params.namespace}" ]; then
+    if [ -z "${params.namespace}" ]; then
       echo "[ERROR]: A namespace has not been declared. Please declare a namespace in your Jenkins docker_registry pipeline variable"
       exit 1
     fi
-    if [ -n "${params.release_name}" ]; then
+    if [ -z "${params.release_name}" ]; then
       echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins docker_registry pipeline variable"
       exit 1
     fi
