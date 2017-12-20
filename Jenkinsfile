@@ -42,7 +42,7 @@ podTemplate(label: 'mypod',
       stage('Compile code') {
         sh """
         #!/bin/bash
-        ls -R
+        ls -R /home
         exit 1
         printenv | grep MAVEN
         export MAVEN_CONFIG="${params.maven_config}"
