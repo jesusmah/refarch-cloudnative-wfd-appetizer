@@ -43,7 +43,7 @@ podTemplate(label: 'mypod',
         sh """
         #!/bin/bash
         printenv | grep MAVEN
-        export MAVEN_CONFIG=${params.maven_config}"
+        export MAVEN_CONFIG="${params.maven_config}"
         printenv | grep MAVEN
         mvn clean package
         """
