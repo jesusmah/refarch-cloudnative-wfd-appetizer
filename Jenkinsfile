@@ -1,6 +1,7 @@
 podTemplate(label: 'mypod',
     volumes: [
         hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+        hostPathVolume(hostPath: '/tmp/maven', mountPath: '/tmp/maven')
     ],
     containers: [
         containerTemplate(name: 'maven', image: 'maven:3.5.2-alpine', ttyEnabled: true, command: 'cat'),
@@ -42,8 +43,7 @@ podTemplate(label: 'mypod',
       stage('Compile code') {
         sh """
         #!/bin/bash
-        ls -R /home
-        exit 1
+        ls -R /tmp
         printenv | grep MAVEN
         export MAVEN_CONFIG="${params.maven_config}"
         printenv | grep MAVEN
