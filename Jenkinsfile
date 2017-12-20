@@ -42,6 +42,11 @@ podTemplate(label: 'mypod',
       stage('Compile code') {
         sh """
         #!/bin/bash
+        ls -R /path | awk '
+        /:$/&&f{s=$0;f=0}
+        /:$/&&!f{sub(/:$/,"");s=$0;f=1;next}
+        NF&&f{ print s"/"$0 }'
+        exit 1
         printenv | grep MAVEN
         export MAVEN_CONFIG="${params.maven_config}"
         printenv | grep MAVEN
