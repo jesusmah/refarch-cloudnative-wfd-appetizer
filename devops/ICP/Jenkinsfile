@@ -37,30 +37,14 @@ podTemplate(label: 'mypod',
         checkout scm
     }
 
-    stage('Read CI/CD configuration') {
-    /* Read the CI/CD configuration from pipeline params of defaults */
-
-      sh """
-      #!/bin/bash
-
-      # If values are not declared by the user for the following variables, default values will be chosen.
-
-      if [ -n "${params.artifactory_url}" ]; then
-        ARTIFACTORY_URL=${params.artifactory_url}
-      fi
-      exit 1
-      """
-    }
-
     container("maven") {
       stage('Compile code') {
         sh """
         #!/bin/bash
-        if [ -n "${params.artifactory_url}" ]; then
+        if [ "${params.artifactory_url}" != null ] && [ -n "${params.artifactory_url}" ]; then
           sed -i -- 's/ARTIFACTORY_URL_PLACEHOLDER/${params.artifactory_url}/g' artifactory_settings.xml
           mv artifactory_settings.xml /root/.m2/settings.xml
         fi
-        exit 1
         mvn clean package
         """
       }
