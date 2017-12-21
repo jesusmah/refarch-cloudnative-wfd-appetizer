@@ -37,13 +37,6 @@ podTemplate(label: 'mypod',
 
       source devops/ICP/values.properties
 
-      # Release name is needed from the user to uniquely identify the kubernetes resources to work with.
-      # This can not be defaulted.
-      if [ "${params.release_name}" = "null" ]; then
-        echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins docker_registry pipeline variable"
-        exit 1
-      fi
-
       # If values are not declared by the user for the following variables, default values will be chosen.
       if [ "${params.docker_registry}" != "null" ]; then
         DOCKER_REGISTRY=${params.docker_registry}
@@ -54,9 +47,9 @@ podTemplate(label: 'mypod',
       if [ "${params.artifactory_url}" != "null" ]; then
         ARTIFACTORY_URL=${params.artifactory_url}
       fi
-      echo $DOCKER_REGISTRY
-      echo $NAMESPACE
-      echo $ARTIFACTORY_URL
+      echo ${DOCKER_REGISTRY}
+      echo ${NAMESPACE}
+      echo ${ARTIFACTORY_URL}
       exit 1
       """
     }
