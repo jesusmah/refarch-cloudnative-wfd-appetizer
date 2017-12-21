@@ -42,8 +42,8 @@ podTemplate(label: 'mypod',
         sh """
         #!/bin/bash
         if [ "${params.artifactory_url}" != null ] && [ -n "${params.artifactory_url}" ]; then
-          sed -i -- 's/ARTIFACTORY_URL_PLACEHOLDER/${params.artifactory_url}/g' artifactory_settings.xml
-          mv artifactory_settings.xml /root/.m2/settings.xml
+          sed -i -- 's/ARTIFACTORY_URL_PLACEHOLDER/${params.artifactory_url}/g' devops/ICP/artifactory_settings.xml
+          mv devops/ICP/artifactory_settings.xml /root/.m2/settings.xml
         fi
         mvn clean package
         """
