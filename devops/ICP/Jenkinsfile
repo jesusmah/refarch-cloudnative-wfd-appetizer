@@ -12,7 +12,7 @@ podTemplate(label: 'mypod',
     def app
 
     stage('Check CI/CD parameters') {
-      /* Check if the needed CI/CD parameters have been provided */
+    /* Check if the needed CI/CD parameters have been provided */
 
       sh """
       #!/bin/bash
@@ -20,6 +20,7 @@ podTemplate(label: 'mypod',
         echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins release_name pipeline variable"
         exit 1
       fi
+      """
     }
 
     stage('Clone repository') {
@@ -29,36 +30,35 @@ podTemplate(label: 'mypod',
     }
 
     stage('Read CI/CD configuration') {
-    /* Read the CI/CD configuration */
+    /* Read the CI/CD configuration from pipeline params of defaults */
 
-    sh """
-    #!/bin/bash
+      sh """
+      #!/bin/bash
 
-    source devops/ICP/values.properties
+      source devops/ICP/values.properties
 
-    # Release name is needed from the user to uniquely identify the kubernetes resources to work with.
-    # This can not be defaulted.
-    if [ "${params.release_name}" = "null" ]; then
-      echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins docker_registry pipeline variable"
+      # Release name is needed from the user to uniquely identify the kubernetes resources to work with.
+      # This can not be defaulted.
+      if [ "${params.release_name}" = "null" ]; then
+        echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins docker_registry pipeline variable"
+        exit 1
+      fi
+
+      # If values are not declared by the user for the following variables, default values will be chosen.
+      if [ "${params.docker_registry}" != "null" ]; then
+        DOCKER_REGISTRY=${params.docker_registry}
+      fi
+      if [ "${params.namespace}" != "null" ]; then
+        NAMESPACE=${params.namespace}
+      fi
+      if [ "${params.artifactory_url}" != "null" ]; then
+        ARTIFACTORY_URL=${params.artifactory_url}
+      fi
+      echo $DOCKER_REGISTRY
+      echo $NAMESPACE
+      echo $ARTIFACTORY_URL
       exit 1
-    fi
-
-    # If values are not declared by the user for the following variables, default values will be chosen.
-    if [ "${params.docker_registry}" != "null" ]; then
-      DOCKER_REGISTRY=${params.docker_registry}
-    fi
-    if [ "${params.namespace}" != "null" ]; then
-      NAMESPACE=${params.namespace}
-    fi
-    if [ "${params.artifactory_url}" != "null" ]; then
-      ARTIFACTORY_URL=${params.artifactory_url}
-    fi
-    echo $DOCKER_REGISTRY
-    echo $NAMESPACE
-    echo $ARTIFACTORY_URL
-    exit 1
-    """
-
+      """
     }
 
     container("maven") {
