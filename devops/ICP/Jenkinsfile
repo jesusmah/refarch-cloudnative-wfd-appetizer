@@ -11,18 +11,30 @@ podTemplate(label: 'mypod',
   node("mypod") {
     def app
 
-    stage('Read environment configuration') {
-    /* Check if the environment configuration is properly */
+    stage('Check CI/CD parameters') {
+      /* Check if the needed CI/CD parameters have been provided */
+
+      sh """
+      #!/bin/bash
+      if [ "${params.release_name}" = "null" ]; then
+        echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins release_name pipeline variable"
+        exit 1
+      fi
+    }
+
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
+    }
+
+    stage('Read CI/CD configuration') {
+    /* Read the CI/CD configuration */
 
     sh """
     #!/bin/bash
 
-    if [ -e filename ]; then
-      echo "file exists!!!"
-    fi
-    echo $PWD
-    find . -name "values*"
-    source ${WORKSPACE}/devops/ICP/values.properties
+    source devops/ICP/values.properties
 
     # Release name is needed from the user to uniquely identify the kubernetes resources to work with.
     # This can not be defaulted.
@@ -47,12 +59,6 @@ podTemplate(label: 'mypod',
     exit 1
     """
 
-    }
-
-    stage('Clone repository') {
-        /* Let's make sure we have the repository cloned to our workspace */
-
-        checkout scm
     }
 
     container("maven") {
