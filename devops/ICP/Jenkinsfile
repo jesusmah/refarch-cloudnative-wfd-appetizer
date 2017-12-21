@@ -16,7 +16,7 @@ podTemplate(label: 'mypod',
 
       sh """
       #!/bin/bash
-      if [ "${params.release_name}" = "null" ]; then
+      if [ -z "${params.release_name}" ]; then
         echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins release_name pipeline variable"
         exit 1
       fi
@@ -38,18 +38,18 @@ podTemplate(label: 'mypod',
       source devops/ICP/values.properties
 
       # If values are not declared by the user for the following variables, default values will be chosen.
-      if [ "${params.docker_registry}" != "null" ]; then
+      if [ -n "${params.docker_registry}" ]; then
         DOCKER_REGISTRY=${params.docker_registry}
       fi
-      if [ "${params.namespace}" != "null" ]; then
+      if [ -n "${params.namespace}" ]; then
         NAMESPACE=${params.namespace}
       fi
-      if [ "${params.artifactory_url}" != "null" ]; then
+      if [ -n "${params.artifactory_url}" ]; then
         ARTIFACTORY_URL=${params.artifactory_url}
       fi
-      echo ${DOCKER_REGISTRY}
-      echo ${NAMESPACE}
-      echo ${ARTIFACTORY_URL}
+      echo \${DOCKER_REGISTRY}
+      echo \${NAMESPACE}
+      echo \${ARTIFACTORY_URL}
       exit 1
       """
     }
