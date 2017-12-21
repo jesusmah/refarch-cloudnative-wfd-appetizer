@@ -10,6 +10,7 @@ podTemplate(label: 'mypod',
 
   node("mypod") {
     def docker_image_name = 'wfd-appetizer-spring'
+    def pod_container_name = 'wfd-appetizer'
 
     stage('Check CI/CD parameters') {
     /* Check if the needed CI/CD parameters have been provided */
@@ -82,7 +83,7 @@ podTemplate(label: 'mypod',
           DEPLOYMENT=`kubectl get deployments | grep ${params.release_name} | grep wfd-appetizer | awk '{print \$1}'`
 
           # Update Deployment
-          kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=${params.docker_registry}/${params.namespace}/${docker_image_name}:${env.BUILD_NUMBER}
+          kubectl set image deployment/\${DEPLOYMENT} ${pod_container_name}=${params.docker_registry}/${params.namespace}/${docker_image_name}:${env.BUILD_NUMBER}
           kubectl rollout status deployment/\${DEPLOYMENT}
         """
       }
