@@ -43,6 +43,7 @@ podTemplate(label: 'mypod',
       stage('Compile code') {
         sh """
         #!/bin/bash
+        sed -i -- 's/ARTIFACTORY_URL/${params.artifactory_url}/g' artifactory_settings.xml
         mv artifactory_settings.xml /root/.m2/settings.xml
         mvn clean package
         """

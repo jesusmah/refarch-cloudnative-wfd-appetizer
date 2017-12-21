@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.1.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <servers>
-    <server>
-      <username>admin</username>
-      <password>APD5NsQr12aHqNp7</password>
-      <id>central</id>
-    </server>
-    <server>
-      <username>admin</username>
-      <password>APD5NsQr12aHqNp7</password>
-      <id>snapshots</id>
-    </server>
-  </servers>
   <profiles>
     <profile>
       <repositories>
@@ -22,13 +10,13 @@
           </snapshots>
           <id>central</id>
           <name>libs-release</name>
-          <url>http://artifactory-jumpservice:8081/artifactory/libs-release</url>
+          <url>http://ARTIFACTORY_URL/artifactory/libs-release</url>
         </repository>
         <repository>
           <snapshots />
           <id>snapshots</id>
           <name>libs-snapshot</name>
-          <url>http://artifactory-jumpservice:8081/artifactory/libs-snapshot</url>
+          <url>http://ARTIFACTORY_URL/artifactory/libs-snapshot</url>
         </repository>
       </repositories>
       <pluginRepositories>
@@ -38,13 +26,13 @@
           </snapshots>
           <id>central</id>
           <name>libs-release</name>
-          <url>http://artifactory-jumpservice:8081/artifactory/libs-release</url>
+          <url>http://ARTIFACTORY_URL/artifactory/libs-release</url>
         </pluginRepository>
         <pluginRepository>
           <snapshots />
           <id>snapshots</id>
           <name>libs-snapshot</name>
-          <url>http://artifactory-jumpservice:8081/artifactory/libs-snapshot</url>
+          <url>http://ARTIFACTORY_URL/artifactory/libs-snapshot</url>
         </pluginRepository>
       </pluginRepositories>
       <id>artifactory</id>
