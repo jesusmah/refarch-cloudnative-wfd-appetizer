@@ -20,7 +20,7 @@ podTemplate(label: 'mypod',
         echo "[ERROR]: A release name has not been declared. Please declare it in a Jenkins pipeline variable called release_name"
         exit 1
       fi
-      if [ -z "${params.docker_registry}" || "${params.docker_registry}" = "null" ]; then
+      if [ -z "${params.docker_registry}" ] || [ "${params.docker_registry}" = "null" ]; then
         echo "[ERROR]: A Docker registry has not been declared. Please declare it in a Jenkins pipeline variable called docker_registry"
         exit 1
       fi
