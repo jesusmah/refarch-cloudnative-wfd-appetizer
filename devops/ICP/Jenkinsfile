@@ -16,8 +16,9 @@ podTemplate(label: 'mypod',
 
     sh """
     #!/bin/bash
+    printenv
     echo $PWD
-    ls -R
+    ls -R .
     source devops/ICP/values.properties
 
     # Release name is needed from the user to uniquely identify the kubernetes resources to work with.
