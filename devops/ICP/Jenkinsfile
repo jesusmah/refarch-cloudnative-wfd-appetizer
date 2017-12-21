@@ -1,7 +1,6 @@
 podTemplate(label: 'mypod',
     volumes: [
-        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
-        hostPathVolume(hostPath: '/tmp/maven', mountPath: '/tmp/maven')
+        hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
     ],
     containers: [
         containerTemplate(name: 'maven', image: 'maven:3.5.2-alpine', ttyEnabled: true, command: 'cat'),
@@ -12,23 +11,35 @@ podTemplate(label: 'mypod',
   node("mypod") {
     def app
 
-    stage('Environment check') {
-    /* Check if all environment requirements are present before going ahead */
+    stage('Read environment configuration') {
+    /* Check if the environment configuration is properly */
 
     sh """
     #!/bin/bash
-    if [ "${params.docker_registry}" = "null" ]; then
-      echo "[ERROR]: A Docker registry has not been declared. Please declare your Docker registry in your Jenkins docker_registry pipeline variable"
-      exit 1
-    fi
-    if [ "${params.namespace}" = "null" ]; then
-      echo "[ERROR]: A namespace has not been declared. Please declare a namespace in your Jenkins docker_registry pipeline variable"
-      exit 1
-    fi
+
+    source devops/ICP/values.properties
+
+    # Release name is needed from the user to uniquely identify the kubernetes resources to work with.
+    # This can not be defaulted.
     if [ "${params.release_name}" = "null" ]; then
       echo "[ERROR]: A release name has not been declared. Please declare a release name in your Jenkins docker_registry pipeline variable"
       exit 1
     fi
+
+    # If values are not declared by the user for the following variables, default values will be chosen.
+    if [ "${params.docker_registry}" != "null" ]; then
+      DOCKER_REGISTRY=${params.docker_registry}
+    fi
+    if [ "${params.namespace}" != "null" ]; then
+      NAMESPACE=${params.namespace}
+    fi
+    if [ "${params.artifactory_url}" != "null" ]; then
+      ARTIFACTORY_URL=${params.artifactory_url}
+    fi
+    echo $DOCKER_REGISTRY
+    echo $NAMESPACE
+    echo $ARTIFACTORY_URL
+    exit 1
     """
 
     }
@@ -43,8 +54,11 @@ podTemplate(label: 'mypod',
       stage('Compile code') {
         sh """
         #!/bin/bash
-        sed -i -- 's/ARTIFACTORY_URL/${params.artifactory_url}/g' artifactory_settings.xml
-        mv artifactory_settings.xml /root/.m2/settings.xml
+        if [ -n "${ARTIFACTORY_URL}" ]; then
+          sed -i -- 's/ARTIFACTORY_URL_PLACEHOLDER/${ARTIFACTORY_URL}/g' artifactory_settings.xml
+          mv artifactory_settings.xml /root/.m2/settings.xml
+        fi
+        exit 1
         mvn clean package
         """
       }
@@ -55,7 +69,7 @@ podTemplate(label: 'mypod',
         sh """
         #!/bin/bash
 
-        docker build -t ${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
+        docker build -t ${DOCKER_REGISTRY}/${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER} .
         """
 
       }
@@ -66,10 +80,10 @@ podTemplate(label: 'mypod',
           #!/bin/bash
 
           set +x
-          docker login -u=${USERNAME} -p=${PASSWORD} ${params.docker_registry}
+          docker login -u=${USERNAME} -p=${PASSWORD} ${DOCKER_REGISTRY}
           set -x
 
-          docker push ${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+          docker push ${DOCKER_REGISTRY}/${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
           """
         }
       }
@@ -82,7 +96,7 @@ podTemplate(label: 'mypod',
           DEPLOYMENT=`kubectl get deployments | grep ${params.release_name} | grep wfd-appetizer | awk '{print \$1}'`
 
           # Update Deployment
-          kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=${params.docker_registry}/${params.namespace}/wfd-appetizer-spring:${env.BUILD_NUMBER}
+          kubectl set image deployment/\${DEPLOYMENT} wfd-appetizer=${DOCKER_REGISTRY}/${NAMESPACE}/wfd-appetizer-spring:${env.BUILD_NUMBER}
           kubectl rollout status deployment/\${DEPLOYMENT}
         """
       }
